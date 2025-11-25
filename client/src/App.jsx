@@ -1,15 +1,15 @@
 import { useEffect } from "react";
 import MainLayout from "./components/mainLayout";
+import { socketServer } from "./socket/socketClient";
+
 function App() {
-  // useEffect(() => {
-  //   fetch('http://localhost:5004/')
-  //     .then(response => response.json())
-  //     .then(data => console.log(data))
-  // }, [])
+  useEffect(() => {
+    socketServer()
+  }, [])
 
   return (
     <>
-    <MainLayout/>
+      <MainLayout />
     </>
   );
 }
