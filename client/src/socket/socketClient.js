@@ -1,19 +1,24 @@
 import { io } from 'socket.io-client';
+import { store } from '../store';
+import { storeResponse } from '../store/chatSlice';
 
 let socket;
 
 export const socketServer = () => {
     socket = io('http://localhost:5004');
     socket.on('connect', () => {
-        console.log(`Connected to socket server: ${socket.id}`)
+        //console.log(`Connected to socket server: ${socket.id}`)
+        socket.on('ai-response', (data) => {
+            store.dispatch(storeResponse(data))
+        })
     })
 }
 
 export const sendMessageToServer = ({ message, chatId }) => {
-    const chat = {
-        chatId,
-        message,
-    }
+    let state = store.getState();
+    const chat = state.chat.chats.find(chat => chat.id === chatId);
+
+
     socket.emit('user-message', {
         ...chat
     })
